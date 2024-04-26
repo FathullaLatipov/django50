@@ -11,4 +11,11 @@ class CategoryModelAdmin(admin.ModelAdmin):
     ordering = ['-id']
 
 
-admin.site.register(ProductsModel)
+@admin.register(ProductsModel)
+class ProductsModelAdmin(admin.ModelAdmin):
+    search_fields = ['product_name', 'id', 'created_at']
+    list_filter = ['created_at']
+    list_display = ['id', 'product_name', 'created_at']
+    ordering = ['-id']
+
+# admin.site.register(ProductsModel)
