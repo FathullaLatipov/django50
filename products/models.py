@@ -15,7 +15,7 @@ class CategoryModel(models.Model):
 
 class ProductsModel(models.Model):
     product_name = models.CharField(max_length=50)
-    category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE)
+    category = models.ManyToManyField(CategoryModel)
     price = models.FloatField()
     description = models.TextField()
     count = models.IntegerField()
