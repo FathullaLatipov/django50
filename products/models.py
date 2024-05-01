@@ -28,3 +28,17 @@ class ProductsModel(models.Model):
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
+
+
+class MyUserModel(models.Model):
+    username = models.CharField(max_length=60)
+    email = models.EmailField()
+    phone_number = models.IntegerField()
+    password = models.CharField(max_length=120)
+
+    def __str__(self):
+        return self.username
+
+    class Meta:
+        verbose_name = 'MyUser'
+        verbose_name_plural = 'MyUsers'

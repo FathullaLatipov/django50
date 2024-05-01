@@ -12,12 +12,35 @@ def home_page(request):
 
 def search_products(request):
     if request.method == 'POST':
-        get_product = request.POST.get('search_product')
+        get_product = request.POST.get('search_product')  # То что искал пользователь iphone
 
         try:
             exact_product = ProductsModel.objects.get(product_name__icontains=get_product)
             print(f'Yeeeah we found for you this product {exact_product}')
-            return redirect(f'product/{exact_product.id}')
+            return redirect(f'product/{exact_product.id}')  # 5
         except:
             print('Not Found')
             return redirect('/')
+
+
+#  Function Based View - FBV
+def single_product(request, id):
+    product = ProductsModel.objects.get(id=id)  # 5
+    context = {'product': product}
+    return render(request, 'single-product.html', context=context)
+
+
+# RegisterForm
+# LoginForm
+
+from django.views.generic import FormView
+from products.forms import RegisterForm
+
+
+class MyFormView(FormView):
+    form_class = RegisterForm
+    template_name = 'register.html'
+    success_url = '/login'
+
+
+# Login html logina
