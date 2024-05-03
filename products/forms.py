@@ -15,5 +15,5 @@ class LoginForm(forms.ModelForm):
 
     class Meta:
         model = MyUserModel
-        fields = ['username', 'password']
-        # exclude = ['email', 'phone_number']
+        fields = ['username', 'email', 'phone_number', 'password']
+

@@ -33,14 +33,18 @@ def single_product(request, id):
 # RegisterForm
 # LoginForm
 
-from django.views.generic import FormView
-from products.forms import RegisterForm
+from django.views.generic import FormView, CreateView
+from products.forms import RegisterForm, LoginForm
 
 
-class MyFormView(FormView):
+class MyFormView(CreateView):
     form_class = RegisterForm
     template_name = 'register.html'
     success_url = '/login'
 
 
 # Login html logina
+class MyLoginFormView(CreateView):
+    form_class = LoginForm
+    template_name = 'login.html'
+    success_url = '/'
