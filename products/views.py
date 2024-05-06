@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
-
+from django.contrib.auth import logout as auth_logout
+from django.views.generic import FormView, CreateView, TemplateView
+from products.forms import RegisterForm, LoginForm
 from products.models import ProductsModel, CategoryModel
 
 
@@ -33,9 +35,6 @@ def single_product(request, id):
 # RegisterForm
 # LoginForm
 
-from django.views.generic import FormView, CreateView
-from products.forms import RegisterForm, LoginForm
-
 
 class MyFormView(CreateView):
     form_class = RegisterForm
@@ -48,3 +47,12 @@ class MyLoginFormView(CreateView):
     form_class = LoginForm
     template_name = 'login.html'
     success_url = '/'
+
+
+def logout(request):
+    auth_logout(request)
+    return redirect('/')
+
+
+class LogoutEnter(TemplateView):
+    template_name = 'logout.html'
