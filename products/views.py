@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout as auth_logout
 from django.views.generic import FormView, CreateView, TemplateView
 from products.forms import RegisterForm, LoginForm
-from products.models import ProductsModel, CategoryModel
+from products.models import ProductsModel, CategoryModel, CartModel
 
 
 def home_page(request):
@@ -56,3 +56,45 @@ def logout(request):
 
 class LogoutEnter(TemplateView):
     template_name = 'logout.html'
+
+
+def category_page(request, id):  # 4
+    categories = CategoryModel.objects.get(id=id)  # 4 -> Slaves
+    products = ProductsModel.objects.filter(category=categories)  # 4 -> Products
+
+    context = {'categories': categories, 'products': products}
+    return render(request, template_name='category_products.html', context=context)
+
+
+def add_product_to_cart(request, id):
+    if request.method == 'POST':
+        checker = ProductsModel.objects.get(id=id)  # Один какой то продукт 4
+        #         4.20         4.30
+        if checker.count >= int(request.POST.get('pr_count')):  # кол-во товара
+            CartModel.objects.create(user_id=request.user.id,
+                                     user_product=checker,
+                                     user_product_quantity=int(request.POST.get('pr_count'))).save()
+            return redirect('/user_cart')
+        else:
+            # Поработать с message
+            return redirect('/')
+
+from products.handler import bot
+
+def user_cart(request):
+    # Если в таблице Корзина есть пользователь с определенным id от он нам вернет все его данные
+    cart = CartModel.objects.filter(user_id=request.user.id)
+
+    if request.method == 'POST':
+        main_text = 'Новый заказ'
+
+        for i in cart:
+            main_text += f'Товар: {i.user_product}\n' \
+                         f'Кол-во: {i.user_product_quantity}\n' \
+                         f'ID Пользователя: {i.user_id}\n' \
+                         f'Цена: {i.user_product.price}\n'
+            bot.send_message(-1002089507736, main_text)
+            cart.delete()
+            return redirect('/')
+    else:
+        return render(request, 'cart.html', {'cart': cart})

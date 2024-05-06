@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from products.models import CategoryModel, ProductsModel, MyUserModel
+from products.models import CategoryModel, ProductsModel, MyUserModel, CartModel
 
 
 @admin.register(CategoryModel)
@@ -25,4 +25,7 @@ class MyUserModelAdmin(admin.ModelAdmin):
     list_display = ['username', 'id', 'phone_number', 'email']
     ordering = ['-id']
 
+
 # admin.site.register(ProductsModel)
+admin.site.register(CartModel)
+
